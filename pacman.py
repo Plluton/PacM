@@ -164,7 +164,7 @@ def gestion_de_la_peur():
             for m in monstres:
                 if m['etat'] != 'mort':
                     canvas.itemconfigure(m['costume'], image=m['nom'])
-                    m['vitesse'] = 1 
+                    m['vitesse'] = 1
                 
 def animer_monstre(acteur):
     canvas.coords(acteur['costume'], acteur['x'], acteur['y'])
@@ -182,6 +182,14 @@ def deplacement_monstre(acteur):
     choix = [] #liste des choix possible pour les directions du monstre
     x_case = int(acteur['x']/20)
     y_case = int(acteur['y']/20)
+
+    if acteur['etat'] == 'mort' and x_case == 11 and y_case == 10:
+        # Le fantôme est mort et a atteint sa base, réinitialiser sa position et état
+        acteur['x'] = 11 * 20
+        acteur['y'] = 10 * 20
+        acteur['etat'] = 'vivant'
+        canvas.itemconfigure(acteur['costume'], image=acteur['nom'])
+        return    
     
     if y_case*20 == int(acteur['y']) and x_case*20 == int(acteur['x']):
         
@@ -217,7 +225,7 @@ def deplacement_monstre(acteur):
                 choix.remove('Up')
 
                 
-        
+        # Retour a la base d'un fantome avec l'etat "mort"
         if acteur['etat'] == 'mort':
             if x_case > 11 and 'Left' in choix:
                 acteur['direction'] = 'Left'
@@ -260,7 +268,7 @@ def manger(pacman):
             for m in monstres:
                 if m['etat'] != 'mort':
                     canvas.itemconfigure(m['costume'], image=image_peur)
-                    m['vitesse'] = 0.5
+                    m['vitesse'] = 0.7
     if compteur_pastilles == 0:
         fin_de_partie('win')
 
@@ -323,7 +331,7 @@ def collision_pacman_monstres(m):
                 etiquette_points['text'] = 'Points: ' + str(compteur_points)     
                 canvas.itemconfigure(m['costume'], image=image_yeux)
                 m['etat'] = 'mort'
-                m['vitesse'] = 1
+                m['vitesse'] = 2
     
 
 
